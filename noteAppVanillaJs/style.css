@@ -1,0 +1,57 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    /* background-color: red; */
+    display: flex;
+}
+
+aside {
+    /* background-color: blue; */
+    flex: 2;
+    height: 100vh;
+    padding: 20px;
+    
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 50px;
+
+    margin-bottom: 50px;
+}
+
+header > i  {
+    text-align: center;
+    width: 30px;
+    cursor: pointer;
+    background-color: #4A4E74;
+    border-radius: 4px;
+}
+
+header > i :hover{
+    background-color: red;
+}
+
+.note{
+    /* margin: 20px 0px; */
+    display: flex;
+    flex-direction: row;
+    /* align-items: center; */
+    font-size: 25px;
+    padding-bottom: 20px;
+}
+
+.note:hover{
+    background-color: red;
+}
+
+main {
+    background-color: yellow;
+    flex: 6;
+    height: 100vh;
+}
+
