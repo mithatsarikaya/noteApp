@@ -3,10 +3,10 @@ const noteScreen = document.querySelector(".mainPage");
 
 // // localStorage.setItem("data", "how u doin");
 // get data
-const data = localStorage.getItem("data");
 //if no data then "let user create his first page", if data then "let user see his note" page
 
 const showMainPageIfHasData = () => {
+  let data = localStorage.getItem("data");
   data
     ? ((noteScreen.style.display = "flex"),
       (noNoteScreen.style.display = "none"))
@@ -20,6 +20,7 @@ createFirstNoteBtn.addEventListener("click", () => {
   localStorage.setItem("data", "how u doin");
 
   showMainPageIfHasData();
+  //   console.log({ data });
 });
 
 const notes = document.querySelectorAll(".note");
