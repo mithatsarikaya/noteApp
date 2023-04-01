@@ -23,17 +23,18 @@ header {
     margin-bottom: 50px;
 }
 
-header > i  {
+header > button  {
     text-align: center;
+    font-size: 50px;
     width: 50px;
     cursor: pointer;
     background-color: #4A4E74;
     border-radius: 4px;
 }
-
-header > i :hover{
-    background-color: red;
-}
+/* 
+header > button :hover {
+    background-color: white;
+} */
 
 .note{
     /* display: flex; */
