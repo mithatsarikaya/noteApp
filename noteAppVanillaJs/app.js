@@ -1,10 +1,11 @@
 const noNoteScreen = document.querySelector(".ifNoNote");
 const noteScreen = document.querySelector(".mainPage");
 
+const notesDiv = document.querySelector(".notes");
+
 // // localStorage.setItem("data", "how u doin");
 // get data
 //if no data then "let user create his first page", if data then "let user see his note" page
-
 const showMainPageIfHasData = () => {
   let data = localStorage.getItem("data");
   data
@@ -14,13 +15,18 @@ const showMainPageIfHasData = () => {
       (noteScreen.style.display = "none"));
 };
 showMainPageIfHasData();
+
+let firstNoteHeader = '<div class="note n1">Note 1</div>';
+let firstNote =
+  '<textarea class="n1text" name="" id="" cols="30" rows="20">1</textarea>';
+
 const createFirstNoteBtn = document.querySelector(".ifNoNote--button");
 createFirstNoteBtn.addEventListener("click", () => {
-  console.log("create btn clicked");
-  localStorage.setItem("data", "how u doin");
+  let noteData = [{ id: 1, note: "Note 1" }];
+  localStorage.setItem("data", JSON.stringify(noteData));
 
   showMainPageIfHasData();
-  //   console.log({ data });
+  notesDiv.innerHTML = firstNoteHeader;
 });
 
 const notes = document.querySelectorAll(".note");
@@ -63,9 +69,5 @@ notes.forEach((note) => {
 });
 
 const addNotesBtn = document.querySelector(".header--button");
-
-let noteHeader = '<div class="note n1">Note 1</div>';
-let note =
-  '<textarea class="n1text" name="" id="" cols="30" rows="20">1</textarea>';
 
 addNotesBtn.addEventListener("click", () => {});
