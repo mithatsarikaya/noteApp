@@ -1,19 +1,26 @@
 const noNoteScreen = document.querySelector(".ifNoNote");
 const noteScreen = document.querySelector(".mainPage");
 
-//get data
-let data = localStorage.getItem("data");
-data = "a";
-console.log(data);
+// // localStorage.setItem("data", "how u doin");
+// get data
+const data = localStorage.getItem("data");
 //if no data then "let user create his first page", if data then "let user see his note" page
-data !== "null"
-  ? (noteScreen.style.display = "block")
-  : (noNoteScreen.style.display = "none");
 
+const showMainPageIfHasData = () => {
+  data
+    ? ((noteScreen.style.display = "flex"),
+      (noNoteScreen.style.display = "none"))
+    : ((noNoteScreen.style.display = "flex"),
+      (noteScreen.style.display = "none"));
+};
+showMainPageIfHasData();
 const createFirstNoteBtn = document.querySelector(".ifNoNote--button");
-createFirstNoteBtn.addEventListener("click", () =>
-  console.log("fed up with this shit")
-);
+createFirstNoteBtn.addEventListener("click", () => {
+  console.log("create btn clicked");
+  localStorage.setItem("data", "how u doin");
+
+  showMainPageIfHasData();
+});
 
 const notes = document.querySelectorAll(".note");
 
