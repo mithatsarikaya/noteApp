@@ -38,3 +38,9 @@ notes.forEach((note) => {
 });
 
 const addNotesBtn = document.querySelector(".header--button");
+
+let noteHeader = '<div class="note n1">Note 1</div>';
+let note =
+  '<textarea class="n1text" name="" id="" cols="30" rows="20">1</textarea>';
+
+addNotesBtn.addEventListener("click", () => {});

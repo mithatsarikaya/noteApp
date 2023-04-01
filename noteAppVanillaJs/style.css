@@ -3,8 +3,37 @@
     box-sizing: border-box;
 }
 
-body{
-    /* background-color: red; */
+
+/* body{
+    display: flex;
+} */
+
+.ifNoNote{
+
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color:#4A4E74;
+    color: white;
+    
+}
+
+.ifNoNote--title{
+    font-size: 50px;
+}
+
+.ifNoNote--button{
+    margin-top: 50px;
+    width: 300px;
+    height: 100px;
+    font-size: 50px;
+    cursor: pointer;
+}
+
+.mainPage {
     display: flex;
 }
 
@@ -31,10 +60,11 @@ header > button  {
     background-color: #4A4E74;
     border-radius: 4px;
 }
-/* 
-header > button :hover {
+
+header > button:hover {
     background-color: white;
-} */
+    color:  #4A4E74;
+}
 
 .note{
     /* display: flex; */
