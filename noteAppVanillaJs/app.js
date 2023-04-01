@@ -1,3 +1,20 @@
+const noNoteScreen = document.querySelector(".ifNoNote");
+const noteScreen = document.querySelector(".mainPage");
+
+//get data
+let data = localStorage.getItem("data");
+data = "a";
+console.log(data);
+//if no data then "let user create his first page", if data then "let user see his note" page
+data !== "null"
+  ? (noteScreen.style.display = "block")
+  : (noNoteScreen.style.display = "none");
+
+const createFirstNoteBtn = document.querySelector(".ifNoNote--button");
+createFirstNoteBtn.addEventListener("click", () =>
+  console.log("fed up with this shit")
+);
+
 const notes = document.querySelectorAll(".note");
 
 //add 'selectedNote' style to the div, if not selected then remove it
