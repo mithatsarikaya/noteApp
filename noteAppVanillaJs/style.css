@@ -26,7 +26,7 @@ header {
 
 header > i  {
     text-align: center;
-    width: 30px;
+    width: 50px;
     cursor: pointer;
     background-color: #4A4E74;
     border-radius: 4px;
@@ -37,16 +37,21 @@ header > i :hover{
 }
 
 .note{
-    /* margin: 20px 0px; */
-    display: flex;
-    flex-direction: row;
-    /* align-items: center; */
+    /* display: flex; */
+    /* flex-direction: row; */
+    justify-content: space-around;
     font-size: 25px;
-    padding-bottom: 20px;
+    padding: 20px;
+    cursor: pointer;
+}
+
+.selected--note{
+    background-color: #4A4E74;
 }
 
 .note:hover{
-    background-color: red;
+    background-color: pink;
+    color: blue;
 }
 
 main {
