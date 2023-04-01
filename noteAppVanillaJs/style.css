@@ -20,7 +20,6 @@ header {
     display: flex;
     justify-content: space-between;
     font-size: 50px;
-
     margin-bottom: 50px;
 }
 
@@ -55,8 +54,13 @@ header > i :hover{
 }
 
 main {
-    background-color: yellow;
     flex: 6;
     height: 100vh;
 }
 
+textarea{
+    padding: 40px;
+    margin-top: 50px;
+    width: 90%;
+    display: none;
+}

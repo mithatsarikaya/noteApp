@@ -3,6 +3,7 @@ const notes = document.querySelectorAll(".note");
 //add 'selectedNote' style to the div, if not selected then remove it
 const addOrRemoveSelectedNoteClass = (selectedNote) => {
   notes.forEach((n) => {
+    //classList[1] has unique value to find the selected class
     Array.from(n.classList).includes(selectedNote.classList[1])
       ? n.classList.add("selected--note")
       : n.classList.remove("selected--note");
