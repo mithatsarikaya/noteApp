@@ -105,5 +105,16 @@ addNotesBtn.addEventListener("click", () => {
   // console.log(data);
   data = [...data, { id: `Note ${clickCount}`, note: "" }];
   localStorage.setItem("data", JSON.stringify(data));
-  refreshPageWhenAddedOrRemovedData();
+
+  let noteHeaderNode = document.querySelector(".note");
+  let noteTextNode = document.querySelector(".n1text");
+  // console.log(noteHeaderNode);
+  // console.log(noteTextNode);
+
+  let newNoteHeader = noteHeaderNode.cloneNode();
+  newNoteHeader.innerText = `Note ${data.length}`;
+  newNoteHeader.classList = `note n${data.length}`;
+  document.querySelector(".notes").append(newNoteHeader);
+  console.log(newNoteHeader);
+  // refreshPageWhenAddedOrRemovedData();
 });
