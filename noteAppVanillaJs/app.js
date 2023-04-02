@@ -1,6 +1,7 @@
 const noNoteScreen = document.querySelector(".ifNoNote");
 const noteScreen = document.querySelector(".mainPage");
-const textareas = document.getElementsByTagName("textarea");
+let textareas = document.getElementsByTagName("textarea");
+// const notes = document.querySelectorAll(".note");
 
 const notesHeaderDiv = document.querySelector(".notes");
 const notesArticle = document.querySelector("article");
@@ -16,6 +17,9 @@ let firstNote =
 const getSelectedTextAreaToTheScreen = (textareas, selectedUniqueClass) => {
   for (let i = 0; i < textareas.length; i++) {
     const t = textareas[i];
+
+    console.log(textareas);
+    console.log(selectedUniqueClass);
     //textarea class example is "n1text"
     Array.from(t.classList)[0].slice(0, 2).includes(selectedUniqueClass)
       ? (t.style.display = "block")
@@ -55,22 +59,25 @@ const createFirstNoteBtn = document.querySelector(".ifNoNote--button");
 createFirstNoteBtn.addEventListener("click", () => {
   let noteData = [{ id: "Note 1", note: "" }];
   localStorage.setItem("data", JSON.stringify(noteData));
-  showMainPageIfHasData();
 
   //after creating first note, adding to the page
   notesHeaderDiv.innerHTML = firstNoteHeader;
   notesArticle.innerHTML = firstNote;
 
+  showMainPageIfHasData();
+
   //make first noteheader selected
   //make dota 2 great again
   document.querySelector(".note").classList.add("selected--note");
   addFirstNoteHeaderAndText();
-});
 
-const notes = document.querySelectorAll(".note");
+  getSelectedTextAreaToTheScreen(textareas, selectedUniqueClass);
+});
 
 //add 'selectedNote' style to the div, if not selected then remove it
 const addOrRemoveSelectedNoteClass = (selectedNote, selectedUniqueClass) => {
+  let notes = document.querySelectorAll(".note");
+  let textareas = document.getElementsByTagName("textarea");
   notes.forEach((n) => {
     //classList[1] has unique value to find the selected class
     Array.from(n.classList).includes(selectedUniqueClass)
@@ -83,20 +90,25 @@ const addOrRemoveSelectedNoteClass = (selectedNote, selectedUniqueClass) => {
 // console.log(notes);
 
 //when any note click, find it and show it to user
-notes.forEach((note) => {
-  note.addEventListener("click", (e) => {
-    let selectedNote = e.target;
-    let selectedUniqueClass = e.target.classList[1];
+const selectedTextToTheScreen = () => {
+  let notes = document.querySelectorAll(".note");
+  notes.forEach((note) => {
+    note.addEventListener("click", (e) => {
+      let selectedNote = e.target;
+      let selectedUniqueClass = e.target.classList[1];
 
-    addOrRemoveSelectedNoteClass(selectedNote, selectedUniqueClass);
+      let textareas = document.getElementsByTagName("textarea");
+      console.log(selectedUniqueClass);
+      console.log(selectedNote);
+      addOrRemoveSelectedNoteClass(selectedNote, selectedUniqueClass);
 
-    getSelectedTextAreaToTheScreen(textareas, selectedUniqueClass);
+      getSelectedTextAreaToTheScreen(textareas, selectedUniqueClass);
+    });
   });
-});
-
+};
 const addNotesBtn = document.querySelector(".header--button");
 
-//to be able to see this button there should already be firstData
+//to be able to see this button there should already be firstData, since there is a data clickcount starts with1
 let clickCount = 1;
 
 addNotesBtn.addEventListener("click", () => {
@@ -115,6 +127,14 @@ addNotesBtn.addEventListener("click", () => {
   newNoteHeader.innerText = `Note ${data.length}`;
   newNoteHeader.classList = `note n${data.length}`;
   document.querySelector(".notes").append(newNoteHeader);
+
+  let newNoteTextNode = noteTextNode.cloneNode();
+  newNoteTextNode.innerText = `n${data.length}textaSSASA`;
+  newNoteTextNode.classList = `n${data.length}text`;
+  newNoteTextNode.style.display = "none";
+  document.querySelector("article").append(newNoteTextNode);
   console.log(newNoteHeader);
+
+  selectedTextToTheScreen();
   // refreshPageWhenAddedOrRemovedData();
 });
