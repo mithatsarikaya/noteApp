@@ -34,6 +34,11 @@ const addFirstNoteHeaderAndText = () => {
   getSelectedTextAreaToTheScreen(textareas, (selectedUniqueClass = "n1"));
 };
 
+const refreshPageWhenAddedOrRemovedData = () => {
+  let data = localStorage.getItem("data");
+  console.log(data);
+};
+
 const showMainPageIfHasData = () => {
   let data = localStorage.getItem("data");
   data
@@ -48,7 +53,7 @@ showMainPageIfHasData();
 
 const createFirstNoteBtn = document.querySelector(".ifNoNote--button");
 createFirstNoteBtn.addEventListener("click", () => {
-  let noteData = [{ id: 1, note: "Note 1" }];
+  let noteData = [{ id: "Note 1", note: "" }];
   localStorage.setItem("data", JSON.stringify(noteData));
   showMainPageIfHasData();
 
@@ -91,8 +96,14 @@ notes.forEach((note) => {
 
 const addNotesBtn = document.querySelector(".header--button");
 
+//to be able to see this button there should already be firstData
+let clickCount = 1;
+
 addNotesBtn.addEventListener("click", () => {
+  clickCount++;
   let data = JSON.parse(localStorage.getItem("data"));
-  data = [...data, { id: data.length + 1, note: "" }];
+  // console.log(data);
+  data = [...data, { id: `Note ${clickCount}`, note: "" }];
   localStorage.setItem("data", JSON.stringify(data));
+  refreshPageWhenAddedOrRemovedData();
 });
