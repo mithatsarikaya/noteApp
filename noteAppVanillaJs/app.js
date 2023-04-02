@@ -1,11 +1,40 @@
 const noNoteScreen = document.querySelector(".ifNoNote");
 const noteScreen = document.querySelector(".mainPage");
+const textareas = document.getElementsByTagName("textarea");
 
-const notesDiv = document.querySelector(".notes");
+const notesHeaderDiv = document.querySelector(".notes");
+const notesArticle = document.querySelector("article");
 
+let firstNoteHeader = '<div class="note n1">Note 1</div>';
+let firstNote =
+  '<textarea class="n1text" name="" id="" cols="30" rows="20">1</textarea>';
 // // localStorage.setItem("data", "how u doin");
 // get data
 //if no data then "let user create his first page", if data then "let user see his note" page
+
+//when user click note to edit, show user to the right text area
+const getSelectedTextAreaToTheScreen = (textareas, selectedUniqueClass) => {
+  console.log("getSelectedTextAreaToTheScreen");
+  for (let i = 0; i < textareas.length; i++) {
+    const t = textareas[i];
+    //textarea class example is "n1text"
+    Array.from(t.classList)[0].slice(0, 2).includes(selectedUniqueClass)
+      ? (t.style.display = "block")
+      : (t.style.display = "none");
+  }
+};
+
+const addFirstNoteHeaderAndText = () => {
+  //after creating first note, adding to the page
+  notesHeaderDiv.innerHTML = firstNoteHeader;
+  notesArticle.innerHTML = firstNote;
+
+  //make first noteheader selected
+  //make dota 2 great again
+  document.querySelector(".note").classList.add("selected--note");
+  getSelectedTextAreaToTheScreen(textareas, (selectedUniqueClass = "n1"));
+};
+
 const showMainPageIfHasData = () => {
   let data = localStorage.getItem("data");
   data
@@ -13,20 +42,25 @@ const showMainPageIfHasData = () => {
       (noNoteScreen.style.display = "none"))
     : ((noNoteScreen.style.display = "flex"),
       (noteScreen.style.display = "none"));
+
+  addFirstNoteHeaderAndText();
 };
 showMainPageIfHasData();
-
-let firstNoteHeader = '<div class="note n1">Note 1</div>';
-let firstNote =
-  '<textarea class="n1text" name="" id="" cols="30" rows="20">1</textarea>';
 
 const createFirstNoteBtn = document.querySelector(".ifNoNote--button");
 createFirstNoteBtn.addEventListener("click", () => {
   let noteData = [{ id: 1, note: "Note 1" }];
   localStorage.setItem("data", JSON.stringify(noteData));
-
   showMainPageIfHasData();
-  notesDiv.innerHTML = firstNoteHeader;
+
+  //after creating first note, adding to the page
+  notesHeaderDiv.innerHTML = firstNoteHeader;
+  notesArticle.innerHTML = firstNote;
+
+  //make first noteheader selected
+  //make dota 2 great again
+  document.querySelector(".note").classList.add("selected--note");
+  addFirstNoteHeaderAndText();
 });
 
 const notes = document.querySelectorAll(".note");
@@ -41,18 +75,6 @@ const addOrRemoveSelectedNoteClass = (selectedNote, selectedUniqueClass) => {
   });
 };
 
-//when user click note to edit, show user to the right text area
-const getSelectedTextAreaToTheScreen = (textareas, selectedUniqueClass) => {
-  for (let i = 0; i < textareas.length; i++) {
-    const t = textareas[i];
-    //textarea class example is "n1text"
-    Array.from(t.classList)[0].slice(0, 2).includes(selectedUniqueClass)
-      ? (t.style.display = "block")
-      : (t.style.display = "none");
-  }
-};
-
-const textareas = document.getElementsByTagName("textarea");
 // console.log(textareas);
 // console.log(notes);
 
@@ -70,4 +92,6 @@ notes.forEach((note) => {
 
 const addNotesBtn = document.querySelector(".header--button");
 
-addNotesBtn.addEventListener("click", () => {});
+addNotesBtn.addEventListener("click", () => {
+  console.log("will be here soon");
+});
