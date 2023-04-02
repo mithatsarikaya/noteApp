@@ -18,13 +18,13 @@ const getSelectedTextAreaToTheScreen = (textareas, selectedUniqueClass) => {
   for (let i = 0; i < textareas.length; i++) {
     const t = textareas[i];
 
-    console.log(textareas);
-    console.log(selectedUniqueClass);
     //textarea class example is "n1text"
-    Array.from(t.classList)[0].slice(0, 2).includes(selectedUniqueClass)
+    Array.from(t.classList)[0].replace("text", "") === selectedUniqueClass
       ? (t.style.display = "block")
       : (t.style.display = "none");
   }
+  // console.log(textareas);
+  // console.log(selectedUniqueClass);
 };
 
 const addFirstNoteHeaderAndText = () => {
@@ -40,7 +40,7 @@ const addFirstNoteHeaderAndText = () => {
 
 const refreshPageWhenAddedOrRemovedData = () => {
   let data = localStorage.getItem("data");
-  console.log(data);
+  // console.log(data);
 };
 
 const showMainPageIfHasData = () => {
@@ -98,8 +98,9 @@ const selectedTextToTheScreen = () => {
       let selectedUniqueClass = e.target.classList[1];
 
       let textareas = document.getElementsByTagName("textarea");
-      console.log(selectedUniqueClass);
-      console.log(selectedNote);
+      // console.log(selectedUniqueClass);
+      // console.log(selectedNote);
+      // console.log(textareas);
       addOrRemoveSelectedNoteClass(selectedNote, selectedUniqueClass);
 
       getSelectedTextAreaToTheScreen(textareas, selectedUniqueClass);
@@ -133,7 +134,6 @@ addNotesBtn.addEventListener("click", () => {
   newNoteTextNode.classList = `n${data.length}text`;
   newNoteTextNode.style.display = "none";
   document.querySelector("article").append(newNoteTextNode);
-  console.log(newNoteHeader);
 
   selectedTextToTheScreen();
   // refreshPageWhenAddedOrRemovedData();
