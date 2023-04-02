@@ -7,14 +7,13 @@ const notesArticle = document.querySelector("article");
 
 let firstNoteHeader = '<div class="note n1">Note 1</div>';
 let firstNote =
-  '<textarea class="n1text" name="" id="" cols="30" rows="20">1</textarea>';
+  '<textarea class="n1text" name="" id="" cols="30" rows="20"></textarea>';
 // // localStorage.setItem("data", "how u doin");
 // get data
 //if no data then "let user create his first page", if data then "let user see his note" page
 
 //when user click note to edit, show user to the right text area
 const getSelectedTextAreaToTheScreen = (textareas, selectedUniqueClass) => {
-  console.log("getSelectedTextAreaToTheScreen");
   for (let i = 0; i < textareas.length; i++) {
     const t = textareas[i];
     //textarea class example is "n1text"
@@ -93,5 +92,7 @@ notes.forEach((note) => {
 const addNotesBtn = document.querySelector(".header--button");
 
 addNotesBtn.addEventListener("click", () => {
-  console.log("will be here soon");
+  let data = JSON.parse(localStorage.getItem("data"));
+  data = [...data, { id: data.length + 1, note: "" }];
+  localStorage.setItem("data", JSON.stringify(data));
 });
