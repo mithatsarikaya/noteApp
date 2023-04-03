@@ -106,7 +106,7 @@ const addFirstNoteHeaderAndText = () => {
   notesArticle.innerHTML = firstNote;
 
   //if there is more than one data, big if
-  if (localStorage.getItem("data")?.length > 1) {
+  if (localStorage.getItem("data")?.length >= 1) {
     let data = JSON.parse(localStorage.getItem("data"));
     //since first note is already on the screen start from the second one
     for (let i = 1; i < data.length; i++) {
