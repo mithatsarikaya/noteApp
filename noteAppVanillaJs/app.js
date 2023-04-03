@@ -9,12 +9,24 @@ const notesArticle = document.querySelector("article");
 let firstNoteHeader = '<div class="note n1">Note 1</div>';
 let firstNote =
   '<textarea class="n1text" name="" id="" cols="30" rows="20"></textarea>';
+
+//if ant noteText change, writes it to the localStorage
+// const noteTextOnChange = () => {
+//   let noteTexts = document.querySelector("textarea");
+//   console.log(noteTexts);
+//   noteTexts.forEach((noteText) =>
+//     noteText.addEventListener("onchange", (event) => {
+//       console.log(event.target.value);
+//     })
+//   );
+// };
+
 // // localStorage.setItem("data", "how u doin");
 // get data
 //if no data then "let user create his first page", if data then "let user see his note" page
 
 //every clone should append 2 elements : header:div noteArea:textarea
-const cloneNodes = (number) => {
+const cloneNodes = (number, localStorageValue) => {
   let noteHeaderNode = document.querySelector(".note");
   let noteTextNode = document.querySelector(".n1text");
 
@@ -24,10 +36,15 @@ const cloneNodes = (number) => {
   document.querySelector(".notes").append(newNoteHeader);
 
   let newNoteTextNode = noteTextNode.cloneNode();
-  newNoteTextNode.innerText = `n${number}textaSSASA`;
+  //if data from localStorage has text value then it will be shown
+  newNoteTextNode.innerText = localStorageValue
+    ? localStorageValue
+    : `n${number} buraları manuel ekledim`;
   newNoteTextNode.classList = `n${number}text`;
   newNoteTextNode.style.display = "none";
   document.querySelector("article").append(newNoteTextNode);
+
+  // noteTextOnChange();
 };
 
 //when user click note to edit, show user to the right text area
@@ -40,6 +57,15 @@ const getSelectedTextAreaToTheScreen = (textareas, selectedUniqueClass) => {
       ? (t.style.display = "block")
       : (t.style.display = "none");
   }
+
+  let textareassssss = document.querySelectorAll("textarea");
+  // console.log(textareassssss);
+  textareassssss.forEach((textareass) => {
+    textareass.addEventListener("onkeyup", (event) => {
+      console.log("here");
+      console.log(event.target);
+    });
+  });
   // console.log(textareas);
   // console.log(selectedUniqueClass);
 };
@@ -84,7 +110,7 @@ const addFirstNoteHeaderAndText = () => {
     let data = JSON.parse(localStorage.getItem("data"));
     //since first note is already on the screen start from the second one
     for (let i = 1; i < data.length; i++) {
-      cloneNodes(i + 1);
+      cloneNodes(i + 1, data[i].note);
     }
   }
 
@@ -110,6 +136,7 @@ const showMainPageIfHasData = () => {
 
   addFirstNoteHeaderAndText();
 };
+
 showMainPageIfHasData();
 
 const createFirstNoteBtn = document.querySelector(".ifNoNote--button");
@@ -164,4 +191,12 @@ addNotesBtn.addEventListener("click", () => {
 
   selectedTextToTheScreen();
   // refreshPageWhenAddedOrRemovedData();
+});
+
+/////////////saves inputttttttttttttttttttttttttttttt
+let textarea1 = document.querySelector(".n1text");
+// console.log(textarea1);
+textarea1.addEventListener("input", (e) => {
+  let data = JSON.parse(localStorage.getItem("data"));
+  console.log(data);
 });
