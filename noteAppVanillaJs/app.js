@@ -163,14 +163,10 @@ createFirstNoteBtn.addEventListener("click", () => {
 
 const addNotesBtn = document.querySelector(".header--button");
 
-//to be able to see this button there should already be firstData, since there is a data clickcount starts with1
-let clickCount = 1;
-
 addNotesBtn.addEventListener("click", () => {
-  clickCount++;
   let data = JSON.parse(localStorage.getItem("data"));
   // console.log(data);
-  data = [...data, { id: `Note ${clickCount}`, note: "" }];
+  data = [...data, { id: `Note ${data.length}`, note: "" }];
   localStorage.setItem("data", JSON.stringify(data));
 
   let noteHeaderNode = document.querySelector(".note");
