@@ -6,7 +6,8 @@ let textareas = document.getElementsByTagName("textarea");
 const notesHeaderDiv = document.querySelector(".notes");
 const notesArticle = document.querySelector("article");
 
-let firstNoteHeader = '<div class="note n1">Note 1</div>';
+let firstNoteHeader =
+  '<div class="note n1">Note 1<button class="deleteNoteBtn"><img class="trashImg" src="trash-solid.svg" alt="" /></button></div>';
 let firstNote =
   '<textarea class="n1text" name="" id="" cols="30" rows="20"></textarea>';
 
@@ -195,4 +196,9 @@ let textarea1 = document.querySelector(".n1text");
 textarea1.addEventListener("input", (e) => {
   let data = JSON.parse(localStorage.getItem("data"));
   console.log(data);
+});
+
+const deleteNoteBtn = document.querySelector(".deleteNoteBtn");
+deleteNoteBtn.addEventListener("click", (e) => {
+  console.log(e.target.classList);
 });
