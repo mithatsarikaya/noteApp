@@ -1,3 +1,4 @@
+/*
 const noNoteScreen = document.querySelector(".ifNoNote");
 const noteScreen = document.querySelector(".mainPage");
 let textareas = document.getElementsByTagName("textarea");
@@ -38,10 +39,8 @@ document.addEventListener("keydown", (e) => {
 
 let randomId = createRandomId();
 console.log(randomId);
-let firstNoteHeader =
-  '<div class="note n1">Note 1<button class="deleteNoteBtn"><img class="trashImg" src="trash-solid.svg" alt="" /></button></div>';
-let firstNote =
-  '<textarea class="n1text" name="" id="" cols="30" rows="20"></textarea>';
+let firstNoteHeader = `<div class="note n1 ${randomId}">Note 1<button class="deleteNoteBtn"><img class="trashImg" src="trash-solid.svg" alt="" /></button></div>`;
+let firstNote = `<textarea class="n1text ${randomId}" name="" id="" cols="30" rows="20"></textarea>`;
 
 //if ant noteText change, writes it to the localStorage
 // const noteTextOnChange = () => {
@@ -242,3 +241,62 @@ deleteNoteBtn.addEventListener("click", (e) => {
 
   console.log("ilk div: " + parentElement);
 });
+
+*/
+
+// const clickBtn = (elem) => {
+//   elem.click();
+// };
+
+const noNoteScreen = document.querySelector(".ifNoNote");
+const noteScreen = document.querySelector(".mainPage");
+let textareas = document.getElementsByTagName("textarea");
+// const notes = document.querySelectorAll(".note");
+
+const notesHeaderDiv = document.querySelector(".notes");
+const notesArticle = document.querySelector("article");
+
+const createRandomId = () => {
+  var randomWord = "";
+  var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvwxyz";
+
+  for (let i = 1; i <= 8; i++) {
+    var char = Math.floor(Math.random() * str.length + 1);
+
+    randomWord += str.charAt(char);
+  }
+
+  return randomWord;
+};
+
+const clickBtn = (elem) => {
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "b") {
+      elem.click();
+    }
+  });
+};
+
+const firstCreateBtn = document.querySelector(".ifNoNote--button");
+
+firstCreateBtn.addEventListener("click", () => {
+  console.log("smt what u need to do is create it again");
+});
+
+clickBtn(firstCreateBtn);
+const dataFromLocalStorage = () => localStorage.getItem("data");
+//if local storage has data then show the Main page which has notes
+//else show noData screen
+const showMainPageIfHasData = () => {
+  let data = dataFromLocalStorage();
+  console.log(data);
+  data
+    ? ((noteScreen.style.display = "flex"),
+      (noNoteScreen.style.display = "none"))
+    : ((noNoteScreen.style.display = "flex"),
+      (noteScreen.style.display = "none"));
+
+  // addFirstNoteHeaderAndText();
+};
+
+showMainPageIfHasData();
