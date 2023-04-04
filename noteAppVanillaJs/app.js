@@ -6,6 +6,22 @@ let textareas = document.getElementsByTagName("textarea");
 const notesHeaderDiv = document.querySelector(".notes");
 const notesArticle = document.querySelector("article");
 
+const createRandomId = () => {
+  var randomWord = "";
+  var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvwxyz";
+
+  console.log(str);
+  for (let i = 1; i <= 8; i++) {
+    var char = Math.floor(Math.random() * str.length + 1);
+
+    randomWord += str.charAt(char);
+  }
+
+  return randomWord;
+};
+
+createRandomId();
+
 let firstNoteHeader =
   '<div class="note n1">Note 1<button class="deleteNoteBtn"><img class="trashImg" src="trash-solid.svg" alt="" /></button></div>';
 let firstNote =
@@ -207,4 +223,6 @@ deleteNoteBtn.addEventListener("click", (e) => {
   while (parentElement.nodeName !== "DIV") {
     parentElement = parentElement.parentElement;
   }
+
+  console.log(parentElement);
 });
