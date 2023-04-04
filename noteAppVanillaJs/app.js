@@ -198,7 +198,13 @@ textarea1.addEventListener("input", (e) => {
   console.log(data);
 });
 
+//delete note
 const deleteNoteBtn = document.querySelector(".deleteNoteBtn");
 deleteNoteBtn.addEventListener("click", (e) => {
-  console.log(e.target.classList);
+  //imgTrash and the button are inside the noteDiv. this snippet is to find it and delete it.
+  //trying to find immediate div.
+  let parentElement = e.target.parentElement;
+  while (parentElement.nodeName !== "DIV") {
+    parentElement = parentElement.parentElement;
+  }
 });
