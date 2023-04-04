@@ -10,7 +10,6 @@ const createRandomId = () => {
   var randomWord = "";
   var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvwxyz";
 
-  console.log(str);
   for (let i = 1; i <= 8; i++) {
     var char = Math.floor(Math.random() * str.length + 1);
 
@@ -20,8 +19,25 @@ const createRandomId = () => {
   return randomWord;
 };
 
-createRandomId();
+const clickBtn = (elem) => {
+  elem.click();
+};
 
+document.addEventListener("keydown", (e) => {
+  if (e.key === "b") {
+    clickBtn();
+  }
+});
+
+// document.onkeydown = function (e) {
+//   console.log(e);
+//   // if (keyCode == 90) {
+//   //   clicked();
+//   // }
+// };
+
+let randomId = createRandomId();
+console.log(randomId);
 let firstNoteHeader =
   '<div class="note n1">Note 1<button class="deleteNoteBtn"><img class="trashImg" src="trash-solid.svg" alt="" /></button></div>';
 let firstNote =
@@ -224,5 +240,5 @@ deleteNoteBtn.addEventListener("click", (e) => {
     parentElement = parentElement.parentElement;
   }
 
-  console.log(parentElement);
+  console.log("ilk div: " + parentElement);
 });
