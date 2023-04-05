@@ -269,6 +269,11 @@ const createRandomId = () => {
   return randomWord;
 };
 
+let randomId = createRandomId();
+
+let firstNoteHeader = `<div class="note n1" data-id="${randomId}" >Note 1<button class="deleteNoteBtn"><img class="trashImg" src="trash-solid.svg" alt="" /></button></div>`;
+let firstNote = `<textarea class="n1text" data-id="${randomId}" name="" id="" cols="30" rows="20"></textarea>`;
+
 const clickBtn = (elem) => {
   document.addEventListener("keydown", (e) => {
     if (e.key === "b") {
@@ -279,22 +284,45 @@ const clickBtn = (elem) => {
 
 const firstCreateBtn = document.querySelector(".ifNoNote--button");
 
+// localStorage.clear();
+
 firstCreateBtn.addEventListener("click", () => {
-  console.log("smt what u need to do is create it again");
+  console.log("smt what u need to do is recreating");
+  let data = [
+    {
+      id: randomId,
+      header: "Note 1",
+      text: "",
+    },
+  ];
+
+  localStorage.setItem("data", JSON.stringify(data));
 });
 
+//LAZYGUY
 clickBtn(firstCreateBtn);
-const dataFromLocalStorage = () => localStorage.getItem("data");
-//if local storage has data then show the Main page which has notes
+document.addEventListener("keydown", (e) => {
+  if (e.key === "n") {
+    localStorage.clear();
+  }
+});
+//LAZYGUY
+
+const dataFromLocalStorage = () => JSON.parse(localStorage.getItem("data"));
+//if local storage has data then show the Main page which has notes, also add the nodes
 //else show noData screen
 const showMainPageIfHasData = () => {
   let data = dataFromLocalStorage();
   console.log(data);
-  data
-    ? ((noteScreen.style.display = "flex"),
-      (noNoteScreen.style.display = "none"))
-    : ((noNoteScreen.style.display = "flex"),
-      (noteScreen.style.display = "none"));
+  if (data) {
+    noteScreen.style.display = "flex";
+    noNoteScreen.style.display = "none";
+
+    //if main page initial data from local storage then show it
+  } else {
+    noNoteScreen.style.display = "flex";
+    noteScreen.style.display = "none";
+  }
 
   // addFirstNoteHeaderAndText();
 };
