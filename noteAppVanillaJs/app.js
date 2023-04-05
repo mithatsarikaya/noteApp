@@ -289,15 +289,19 @@ const firstCreateBtn = document.querySelector(".ifNoNote--button");
 
 // localStorage.clear();
 
+const generateBlankData = () => {
+  let randomId = createRandomId();
+  let data = {
+    id: randomId,
+    header: `Note ${randomId.slice(0, 3)}`,
+    text: "",
+  };
+  return data;
+};
+
 firstCreateBtn.addEventListener("click", () => {
   console.log("clicked create btn");
-  let data = [
-    {
-      id: randomId,
-      header: "Note 1",
-      text: "",
-    },
-  ];
+  let data = [generateBlankData()];
 
   localStorage.setItem("data", JSON.stringify(data));
 
@@ -406,11 +410,7 @@ const setSelectedNoteAndHighlightShowTextArea = () => {};
 
 createOneNoteBtn.addEventListener("click", () => {
   let data = dataFromLocalStorage();
-  let newData = {
-    id: createRandomId(),
-    header: `Note ${data.length + 1}`,
-    text: "",
-  };
+  let newData = generateBlankData();
 
   data.push(newData);
   setLocalStorage("data", data);
