@@ -238,7 +238,7 @@ deleteNoteBtn.addEventListener("click", (e) => {
   while (parentElement.nodeName !== "DIV") {
     parentElement = parentElement.parentElement;
   }
-
+  
   console.log("ilk div: " + parentElement);
 });
 
@@ -256,6 +256,10 @@ let textareas = document.getElementsByTagName("textarea");
 const notesHeaderDiv = document.querySelector(".notes");
 const notesArticle = document.querySelector("article");
 
+const setLocalStorage = (storageName, data) =>
+  localStorage.setItem(storageName, JSON.stringify(data));
+
+const createOneNoteBtn = document.querySelector(".header--button");
 const createRandomId = () => {
   var randomWord = "";
   var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvwxyz";
@@ -287,7 +291,7 @@ const firstCreateBtn = document.querySelector(".ifNoNote--button");
 // localStorage.clear();
 
 firstCreateBtn.addEventListener("click", () => {
-  console.log("smt what u need to do is recreating");
+  console.log("clicked create btn");
   let data = [
     {
       id: randomId,
@@ -302,39 +306,40 @@ firstCreateBtn.addEventListener("click", () => {
   showMainPageIfHasData();
 });
 
-//LAZYGUY
-clickBtn(firstCreateBtn);
-document.addEventListener("keydown", (e) => {
-  if (e.key === "n") {
-    localStorage.clear();
-  }
-});
-//LAZYGUY
-
 const dataFromLocalStorage = () => JSON.parse(localStorage.getItem("data"));
+
+//show note and textarea
+const showAndCreateNoteAndTextArea = (id, header, text) => {
+  notesHeaderDiv.insertAdjacentHTML(
+    "beforeend",
+    `<div class="note n1" data-id="${id}" >${header}
+  <button class="deleteNoteBtn">
+  <img class="trashImg" src="trash-solid.svg" alt="" />
+  </button>
+  </div>`
+  );
+
+  notesArticle.insertAdjacentHTML(
+    "beforeend",
+    `<textarea class="n1text" data-id="${id}" name="" id="" cols="30" rows="20">${text}</textarea>`
+  );
+};
+
 //if local storage has data then show the Main page which has notes, also add the nodes
 //else show noData screen
 const showMainPageIfHasData = () => {
   let data = dataFromLocalStorage();
-  console.log(data);
   if (data) {
     noteScreen.style.display = "flex";
     noNoteScreen.style.display = "none";
 
     //"beforeend" adds the element end of it
-    notesHeaderDiv.insertAdjacentHTML(
-      "beforeend",
-      `<div class="note n1" data-id="${data[0].id}" >Note ${data.length}
-    <button class="deleteNoteBtn">
-    <img class="trashImg" src="trash-solid.svg" alt="" />
-    </button>
-    </div>`
-    );
 
-    notesArticle.insertAdjacentHTML(
-      "beforeend",
-      `<textarea class="n1text" data-id="${randomId}" name="" id="" cols="30" rows="20"></textarea>`
-    );
+    for (let i = 0; i < data.length; i++) {
+      // const element = data[i];
+
+      showAndCreateNoteAndTextArea(data[i].id, data[i].header, data[i].text);
+    }
 
     //if main page initial data from local storage then show it
   } else {
@@ -346,3 +351,38 @@ const showMainPageIfHasData = () => {
 };
 
 showMainPageIfHasData();
+
+// ✅ Get the first element that has data-id attribute set
+// const el2 = document.querySelector('[data-id]');
+// console.log(el2); // 👉️ div
+
+// ✅ Get the first element with data-id = `box1`
+// const el1 = document.querySelector('[data-id="box1"]');
+
+// console.log(document.querySelector("[data-id]"));
+
+const setSelectedNoteAndHighlightShowTextArea = () => {};
+
+createOneNoteBtn.addEventListener("click", () => {
+  let data = dataFromLocalStorage();
+  let newData = {
+    id: createRandomId(),
+    header: `Note ${data.length + 1}`,
+    text: "",
+  };
+
+  data.push(newData);
+  setLocalStorage("data", data);
+  showAndCreateNoteAndTextArea(newData.id, newData.header, newData.text);
+  console.log(data);
+});
+
+//LAZYGUY
+// clickBtn(firstCreateBtn);
+clickBtn(createOneNoteBtn);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "n") {
+    localStorage.clear();
+  }
+});
+//LAZYGUY
