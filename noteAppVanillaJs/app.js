@@ -250,7 +250,6 @@ deleteNoteBtn.addEventListener("click", (e) => {
 
 const noNoteScreen = document.querySelector(".ifNoNote");
 const noteScreen = document.querySelector(".mainPage");
-let textareas = document.getElementsByTagName("textarea");
 // const notes = document.querySelectorAll(".note");
 
 const notesHeaderDiv = document.querySelector(".notes");
@@ -325,6 +324,46 @@ const showAndCreateNoteAndTextArea = (id, header, text) => {
   );
 };
 
+const selectNoteAndShowTextArea = () => {
+  let noteDivs = document.querySelectorAll(".note");
+
+  let textareas = document.querySelectorAll("textarea");
+
+  noteDivs.forEach((noteDiv) => {
+    noteDiv.addEventListener("click", (e) => {
+      e.target.classList.add("selected--note");
+      let selectedDivId = e.target.dataset.id;
+
+      //make 'textarea of the selected div' visible
+      textareas.forEach((t) => {
+        if (t.dataset.id === selectedDivId) {
+          t.style.display = "block";
+        } else {
+          t.style.display = "none";
+        }
+
+        //if any textarea has any input then find it with dataset id then write it to localStorage
+        t.addEventListener("input", (e) => {
+          let data = dataFromLocalStorage();
+          let idOfTheTextArea = e.target.dataset.id;
+          data.filter((d) =>
+            d.id === idOfTheTextArea ? (d.text = e.target.value) : ""
+          );
+
+          setLocalStorage("data", data);
+        });
+      });
+
+      //remove selectedclass list
+      noteDivs.forEach((noteDiv) => {
+        if (noteDiv.dataset.id !== selectedDivId) {
+          noteDiv.classList.remove("selected--note");
+        }
+      });
+    });
+  });
+};
+
 //if local storage has data then show the Main page which has notes, also add the nodes
 //else show noData screen
 const showMainPageIfHasData = () => {
@@ -340,6 +379,8 @@ const showMainPageIfHasData = () => {
 
       showAndCreateNoteAndTextArea(data[i].id, data[i].header, data[i].text);
     }
+
+    selectNoteAndShowTextArea();
 
     //if main page initial data from local storage then show it
   } else {
@@ -375,14 +416,15 @@ createOneNoteBtn.addEventListener("click", () => {
   setLocalStorage("data", data);
   showAndCreateNoteAndTextArea(newData.id, newData.header, newData.text);
   console.log(data);
+  selectNoteAndShowTextArea();
 });
 
 //LAZYGUY
 // clickBtn(firstCreateBtn);
-clickBtn(createOneNoteBtn);
-document.addEventListener("keydown", (e) => {
-  if (e.key === "n") {
-    localStorage.clear();
-  }
-});
+// clickBtn(createOneNoteBtn);
+// document.addEventListener("keydown", (e) => {
+//   if (e.key === "n") {
+//     localStorage.clear();
+//   }
+// });
 //LAZYGUY

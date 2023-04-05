@@ -101,7 +101,8 @@ header > button:hover {
 }
 
 .note:hover{
-    background-color: white;
+    /* background-color: white; */
+    opacity: 0.9;
     border: solid 2px black;
     color: blue;
 }
