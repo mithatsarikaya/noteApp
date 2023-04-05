@@ -4,10 +4,13 @@ const noteScreen = document.querySelector(".mainPage");
 const notesHeaderDiv = document.querySelector(".notes");
 const notesArticle = document.querySelector("article");
 
+//save data array of objects to local storage
 const setLocalStorage = (storageName, data) =>
   localStorage.setItem(storageName, JSON.stringify(data));
 
 const createOneNoteBtn = document.querySelector(".header--button");
+
+//generating random id for pairing text areas and header divs
 const createRandomId = () => {
   var randomWord = "";
   var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvwxyz";
@@ -21,6 +24,7 @@ const createRandomId = () => {
   return randomWord;
 };
 
+//delete note and headerdiv pairs with their dataset-id
 const deleteNote = () => {
   //delete note
   const deleteNoteBtns = document.querySelectorAll(".deleteNoteBtn");
