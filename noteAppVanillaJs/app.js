@@ -272,6 +272,31 @@ const createRandomId = () => {
   return randomWord;
 };
 
+const deleteNote = () => {
+  //delete note
+  const deleteNoteBtns = document.querySelectorAll(".deleteNoteBtn");
+  deleteNoteBtns.forEach((deleteNoteBtn) => {
+    deleteNoteBtn.addEventListener("click", (e) => {
+      //imgTrash and the button are inside the noteDiv. this snippet is to find it and delete it.
+      //trying to find immediate div.
+      let parentElement = e.target.parentElement;
+      //find immediate div
+      while (parentElement.nodeName !== "DIV") {
+        parentElement = parentElement.parentElement;
+      }
+
+      //get data from localStorage check the same object has same id and remove it from the data
+      let data = dataFromLocalStorage();
+      data = data.filter((d) => d.id !== parentElement.dataset.id);
+      setLocalStorage("data", data);
+      parentElement.remove();
+
+      //check if any data left, if not then reload page and remove data
+      !data.length ? (localStorage.clear(), location.reload()) : "";
+    });
+  });
+};
+
 let randomId = createRandomId();
 
 let firstNoteHeader = `<div class="note n1" data-id="${randomId}" >Note 1<button class="deleteNoteBtn"><img class="trashImg" src="trash-solid.svg" alt="" /></button></div>`;
@@ -307,6 +332,7 @@ firstCreateBtn.addEventListener("click", () => {
 
   //just after clicking create button, this function will create first elements and show it to the screen
   showMainPageIfHasData();
+  deleteNote();
 });
 
 const dataFromLocalStorage = () => JSON.parse(localStorage.getItem("data"));
@@ -385,7 +411,7 @@ const showMainPageIfHasData = () => {
     }
 
     selectNoteAndShowTextArea();
-
+    deleteNote();
     //if main page initial data from local storage then show it
   } else {
     noNoteScreen.style.display = "flex";
@@ -397,17 +423,6 @@ const showMainPageIfHasData = () => {
 
 showMainPageIfHasData();
 
-// ✅ Get the first element that has data-id attribute set
-// const el2 = document.querySelector('[data-id]');
-// console.log(el2); // 👉️ div
-
-// ✅ Get the first element with data-id = `box1`
-// const el1 = document.querySelector('[data-id="box1"]');
-
-// console.log(document.querySelector("[data-id]"));
-
-const setSelectedNoteAndHighlightShowTextArea = () => {};
-
 createOneNoteBtn.addEventListener("click", () => {
   let data = dataFromLocalStorage();
   let newData = generateBlankData();
@@ -415,16 +430,6 @@ createOneNoteBtn.addEventListener("click", () => {
   data.push(newData);
   setLocalStorage("data", data);
   showAndCreateNoteAndTextArea(newData.id, newData.header, newData.text);
-  console.log(data);
   selectNoteAndShowTextArea();
+  deleteNote();
 });
-
-//LAZYGUY
-// clickBtn(firstCreateBtn);
-// clickBtn(createOneNoteBtn);
-// document.addEventListener("keydown", (e) => {
-//   if (e.key === "n") {
-//     localStorage.clear();
-//   }
-// });
-//LAZYGUY
