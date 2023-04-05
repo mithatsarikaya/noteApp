@@ -297,6 +297,9 @@ firstCreateBtn.addEventListener("click", () => {
   ];
 
   localStorage.setItem("data", JSON.stringify(data));
+
+  //just after clicking create button, this function will create first elements and show it to the screen
+  showMainPageIfHasData();
 });
 
 //LAZYGUY
@@ -317,6 +320,21 @@ const showMainPageIfHasData = () => {
   if (data) {
     noteScreen.style.display = "flex";
     noNoteScreen.style.display = "none";
+
+    //"beforeend" adds the element end of it
+    notesHeaderDiv.insertAdjacentHTML(
+      "beforeend",
+      `<div class="note n1" data-id="${data[0].id}" >Note ${data.length}
+    <button class="deleteNoteBtn">
+    <img class="trashImg" src="trash-solid.svg" alt="" />
+    </button>
+    </div>`
+    );
+
+    notesArticle.insertAdjacentHTML(
+      "beforeend",
+      `<textarea class="n1text" data-id="${randomId}" name="" id="" cols="30" rows="20"></textarea>`
+    );
 
     //if main page initial data from local storage then show it
   } else {
