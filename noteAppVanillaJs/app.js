@@ -25,6 +25,7 @@ const createRandomId = () => {
 };
 
 //delete note and headerdiv pairs with their dataset-id
+//at the end check whether there any note that can be deleted. if no note left, then reload the page
 const deleteNote = () => {
   //delete note
   const deleteNoteBtns = document.querySelectorAll(".deleteNoteBtn");
