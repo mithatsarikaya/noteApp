@@ -51,8 +51,12 @@ export default function App() {
 
   }
   
-
-  console.log(note);
+  const getIdToBeDeletedFromChildAndDelete=(getIt)=>{
+    let idToBeDeleted = getIt
+    setNote(note=>note.filter(n=>n.id!==idToBeDeleted))
+  }
+  //when user click trash button which is close to note, delete it 
+  
 
   return (
     
@@ -71,7 +75,7 @@ export default function App() {
           <button onClick={deleteForFun} class="header--button">-</button>
         </header>
         <div class="notes">
-        {note.map(n=><Note id={n.id} header={n.header} selectedNoteId={selectedNoteId} onClick={selectNote} />)}
+        {note.map(n=><Note id={n.id}  header={n.header} selectedNoteId={selectedNoteId} getIdToBeDeletedFromChildAndDelete={getIdToBeDeletedFromChildAndDelete} onClick={selectNote} />)}
         
         </div>
       </aside>
