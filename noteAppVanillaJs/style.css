@@ -118,4 +118,5 @@ textarea{
     margin-top: 50px;
     width: 90%;
     display: none;
+    border: solid 2px black;
 }

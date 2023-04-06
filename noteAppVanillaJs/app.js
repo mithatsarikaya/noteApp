@@ -79,7 +79,6 @@ const generateBlankData = () => {
 };
 
 firstCreateBtn.addEventListener("click", () => {
-  console.log("clicked create btn");
   let data = [generateBlankData()];
 
   localStorage.setItem("data", JSON.stringify(data));
