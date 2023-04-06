@@ -31,64 +31,83 @@ const generateBlankData = ()=>{
 
 
 export default function App() {
-  const [note, setNote] = React.useState([])
+
+  const [notes, setNotes] = React.useState(
+    () => JSON.parse(localStorage.getItem("data")) || []
+  )
+  //get data on first render
+  
+
+
   const [selectedNoteId, setSelectedNoteId] = React.useState("")
   const selectNote = (e)=>{
     setSelectedNoteId(selectedNoteId=>e.target.dataset.id)
   }
-  const createFirstNote = ()=>setNote([generateBlankData()])
-  const deleteForFun = ()=>setNote([])
+  const createFirstNote = ()=>setNotes([generateBlankData()])
+  const deleteForFun = ()=>setNotes([])
   const addNoteAndTextArea =()=>{
-    setNote(prevNote => [...prevNote, generateBlankData()])
+    setNotes(prevNote => [...prevNote, generateBlankData()])
   }
 
   //when textarea change then edit the specific note
   const editTheNoteText = (e)=>{
     let noteIdToBeEditText = e.target.dataset.id
-    setNote(prevNote=> {
+    setNotes(prevNote=> {
      return prevNote.map(p=> p.id === noteIdToBeEditText ? {...p, text : e.target.value} : p)
     })
 
   }
   
+  //when user click trash button which is close to note, delete it 
   const getIdToBeDeletedFromChildAndDelete=(getIt)=>{
     let idToBeDeleted = getIt
-    setNote(note=>note.filter(n=>n.id!==idToBeDeleted))
+    setNotes(prevNotes=>prevNotes.filter(n=>n.id!==idToBeDeleted))
   }
-  //when user click trash button which is close to note, delete it 
   
+
+  
+
+
+  //if notes change write it to localStorage
+  React.useEffect(()=>{
+    localStorage.setItem("data", JSON.stringify(notes))
+    if(notes.length ===0){
+      localStorage.clear()
+    }
+  }, [notes])
 
   return (
     
-    <body>
-      {!note.length>0 ? 
-    <div class="ifNoNote">
-      <h1 class="ifNoNote--title">Click button to create first note</h1>
-      <button onClick={createFirstNote} class="ifNoNote--button">Create</button>
+    <div>
+      {!notes.length>0 ? 
+    <div className="ifNoNote">
+      <h1 className="ifNoNote--title">Click button to create first note</h1>
+      <button onClick={createFirstNote} className="ifNoNote--button">Create</button>
     </div>
     :
-    <div class="mainPage">
+    <div className="mainPage">
       <aside>
         <header>
           <h4>Notes</h4>
-          <button class="header--button" onClick={addNoteAndTextArea}>+</button>
-          <button onClick={deleteForFun} class="header--button">-</button>
+          <button className="header--button" onClick={addNoteAndTextArea}>+</button>
+          <button onClick={deleteForFun} className="header--button">-</button>
         </header>
-        <div class="notes">
-        {note.map(n=><Note id={n.id}  header={n.header} selectedNoteId={selectedNoteId} getIdToBeDeletedFromChildAndDelete={getIdToBeDeletedFromChildAndDelete} onClick={selectNote} />)}
+        <div className="notes">
+        {notes.map(n=><Note key={n.id} id={n.id}  header={n.header} selectedNoteId={selectedNoteId} getIdToBeDeletedFromChildAndDelete={getIdToBeDeletedFromChildAndDelete} onClick={selectNote} />)}
         
         </div>
       </aside>
       <main>
         <article>
         
-        {note.map(n=><Textarea id={n.id} text={n.text} selectedNoteId={selectedNoteId}  onChange={editTheNoteText}/>)}
+        {notes.map(n=><Textarea key={n.id} id={n.id} text={n.text} selectedNoteId={selectedNoteId}  onChange={editTheNoteText}/>)}
         
         </article>
       </main>
     </div>
     }
-  </body>
+  </div>
+  
   )
 }
 
