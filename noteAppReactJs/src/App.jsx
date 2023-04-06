@@ -32,9 +32,15 @@ const generateBlankData = ()=>{
 
 export default function App() {
   const [note, setNote] = React.useState([])
-  const [selected, setSelected] = React.useState()
+  const [selected, setSelected] = React.useState(false)
+  const selectNote = ()=>{
+    setSelected(selected=>!selected)
+  }
   const createFirstNote = ()=>setNote([generateBlankData()])
   const deleteForFun = ()=>setNote([])
+  const addNoteAndTextArea =()=>{
+    setNote(prevNote => [...prevNote, generateBlankData()])
+  }
   return (
     
     <body>
@@ -48,11 +54,11 @@ export default function App() {
       <aside>
         <header>
           <h4>Notes</h4>
-          <button class="header--button">+</button>
+          <button class="header--button" onClick={addNoteAndTextArea}>+</button>
           <button onClick={deleteForFun} class="header--button">-</button>
         </header>
         <div class="notes">
-        {note.map(n=><Note id={n.id} header={n.header} />)}
+        {note.map(n=><Note id={n.id} header={n.header} selected={selected} onClick={selectNote} />)}
         
         </div>
       </aside>
