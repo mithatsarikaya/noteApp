@@ -32,15 +32,18 @@ const generateBlankData = ()=>{
 
 export default function App() {
   const [note, setNote] = React.useState([])
-  const [selected, setSelected] = React.useState(false)
-  const selectNote = ()=>{
-    setSelected(selected=>!selected)
+  const [selectedNoteId, setSelectedNoteId] = React.useState("")
+  const selectNote = (e)=>{
+    setSelectedNoteId(selectedNoteId=>e.target.dataset.id)
+    console.log(selectedNoteId);
   }
   const createFirstNote = ()=>setNote([generateBlankData()])
   const deleteForFun = ()=>setNote([])
   const addNoteAndTextArea =()=>{
     setNote(prevNote => [...prevNote, generateBlankData()])
   }
+
+  console.log(selectedNoteId);
   return (
     
     <body>
@@ -58,7 +61,7 @@ export default function App() {
           <button onClick={deleteForFun} class="header--button">-</button>
         </header>
         <div class="notes">
-        {note.map(n=><Note id={n.id} header={n.header} selected={selected} onClick={selectNote} />)}
+        {note.map(n=><Note id={n.id} header={n.header} selectedNoteId={selectedNoteId} onClick={selectNote} />)}
         
         </div>
       </aside>
