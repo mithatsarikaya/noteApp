@@ -35,7 +35,6 @@ export default function App() {
   const [selectedNoteId, setSelectedNoteId] = React.useState("")
   const selectNote = (e)=>{
     setSelectedNoteId(selectedNoteId=>e.target.dataset.id)
-    console.log(selectedNoteId);
   }
   const createFirstNote = ()=>setNote([generateBlankData()])
   const deleteForFun = ()=>setNote([])
@@ -43,7 +42,6 @@ export default function App() {
     setNote(prevNote => [...prevNote, generateBlankData()])
   }
 
-  console.log(selectedNoteId);
   return (
     
     <body>
@@ -68,7 +66,7 @@ export default function App() {
       <main>
         <article>
         
-        {note.map(n=><Textarea id={n.id} text={n.text} />)}
+        {note.map(n=><Textarea id={n.id} text={n.text} selectedNoteId={selectedNoteId} />)}
         
         </article>
       </main>
