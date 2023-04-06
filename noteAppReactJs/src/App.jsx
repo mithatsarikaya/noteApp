@@ -42,6 +42,18 @@ export default function App() {
     setNote(prevNote => [...prevNote, generateBlankData()])
   }
 
+  //when textarea change then edit the specific note
+  const editTheNoteText = (e)=>{
+    let noteIdToBeEditText = e.target.dataset.id
+    setNote(prevNote=> {
+     return prevNote.map(p=> p.id === noteIdToBeEditText ? {...p, text : e.target.value} : p)
+    })
+
+  }
+  
+
+  console.log(note);
+
   return (
     
     <body>
@@ -66,7 +78,7 @@ export default function App() {
       <main>
         <article>
         
-        {note.map(n=><Textarea id={n.id} text={n.text} selectedNoteId={selectedNoteId} />)}
+        {note.map(n=><Textarea id={n.id} text={n.text} selectedNoteId={selectedNoteId}  onChange={editTheNoteText}/>)}
         
         </article>
       </main>
