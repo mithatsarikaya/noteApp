@@ -40,7 +40,7 @@ const deleteNote = () => {
       }
 
       //get data from localStorage check the same object has same id and remove it from the data
-      let data = dataFromLocalStorage();
+      let data = getDataFromLocalStorage();
       data = data.filter((d) => d.id !== parentElement.dataset.id);
       setLocalStorage("data", data);
       parentElement.remove();
@@ -66,13 +66,15 @@ const clickBtn = (elem) => {
 
 const firstCreateBtn = document.querySelector(".ifNoNote--button");
 
-// localStorage.clear();
+const getDataFromLocalStorage = () => JSON.parse(localStorage.getItem("data"));
 
 const generateBlankData = () => {
+  let isFirstData = getDataFromLocalStorage() ? false : true;
   let randomId = createRandomId();
   let data = {
     id: randomId,
     header: `Note ${randomId.slice(0, 3)}`,
+    isSelected: isFirstData,
     text: "",
   };
   return data;
@@ -88,13 +90,27 @@ firstCreateBtn.addEventListener("click", () => {
   deleteNote();
 });
 
-const dataFromLocalStorage = () => JSON.parse(localStorage.getItem("data"));
-
-//show note and textarea
-const showAndCreateNoteAndTextArea = (id, header, text) => {
+const rearrangeNoteDiv = (id, header, text, isSelected) => {
   notesHeaderDiv.insertAdjacentHTML(
     "beforeend",
-    `<div class="note n1" data-id="${id}" >${header}
+    `<div class="note n1 ${
+      isSelected ? "selected--note" : ""
+    }" data-id="${id}" >${header}
+  <button class="deleteNoteBtn">
+  <img class="trashImg" src="trash-solid.svg" alt="" />
+  </button>
+  </div>`
+  );
+};
+
+//show note and textarea
+const showAndCreateNoteAndTextArea = (id, header, text, isSelected) => {
+  //"beforeend" adds the element end of it
+  notesHeaderDiv.insertAdjacentHTML(
+    "beforeend",
+    `<div class="note n1 ${
+      isSelected ? "selected--note" : ""
+    }" data-id="${id}" >${header}
   <button class="deleteNoteBtn">
   <img class="trashImg" src="trash-solid.svg" alt="" />
   </button>
@@ -103,7 +119,9 @@ const showAndCreateNoteAndTextArea = (id, header, text) => {
 
   notesArticle.insertAdjacentHTML(
     "beforeend",
-    `<textarea class="n1text" data-id="${id}" name="" id="" cols="30" rows="20">${text}</textarea>`
+    `<textarea class="n1text" style="display:${
+      isSelected ? "block" : "none"
+    }" data-id="${id}" name="" id="" cols="30" rows="20">${text}</textarea>`
   );
 };
 
@@ -117,6 +135,15 @@ const selectNoteAndShowTextArea = () => {
       e.target.classList.add("selected--note");
       let selectedDivId = e.target.dataset.id;
 
+      let data = getDataFromLocalStorage();
+      //if any not selected make isSelected attr true else make it false
+      data = data.map((d) =>
+        d.id === selectedDivId
+          ? { ...d, isSelected: true }
+          : { ...d, isSelected: false }
+      );
+      setLocalStorage("data", data);
+
       //make 'textarea of the selected div' visible
       textareas.forEach((t) => {
         if (t.dataset.id === selectedDivId) {
@@ -127,13 +154,36 @@ const selectNoteAndShowTextArea = () => {
 
         //if any textarea has any input then find it with dataset id then write it to localStorage
         t.addEventListener("input", (e) => {
-          let data = dataFromLocalStorage();
+          let data = getDataFromLocalStorage();
           let idOfTheTextArea = e.target.dataset.id;
           data.filter((d) =>
             d.id === idOfTheTextArea ? (d.text = e.target.value) : ""
           );
 
-          setLocalStorage("data", data);
+          console.log("after click");
+          //if user make any change on a note, then put it on the beginning of the note
+          let newData = [];
+          for (let i = 0; i < data.length; i++) {
+            const note = data[i];
+            if (note.id === idOfTheTextArea) {
+              newData.unshift(note);
+            } else {
+              newData.push(note);
+            }
+          }
+
+          setLocalStorage("data", newData);
+
+          notesHeaderDiv.innerHTML = "";
+          // notesArticle.innerHTML = "";
+
+          for (let i = 0; i < newData.length; i++) {
+            const data = newData[i];
+
+            rearrangeNoteDiv(data.id, data.header, data.text, data.isSelected);
+          }
+          deleteNote();
+          selectNoteAndShowTextArea();
         });
       });
 
@@ -147,20 +197,31 @@ const selectNoteAndShowTextArea = () => {
   });
 };
 
+selectNoteAndShowTextArea();
+
+const saveChangesToTextArea = () => {
+  console.log(document.querySelectorAll("textarea"));
+  console.log("do u even lift bro");
+};
+
+saveChangesToTextArea();
 //if local storage has data then show the Main page which has notes, also add the nodes
 //else show noData screen
 const showMainPageIfHasData = () => {
-  let data = dataFromLocalStorage();
+  let data = getDataFromLocalStorage();
   if (data) {
     noteScreen.style.display = "flex";
     noNoteScreen.style.display = "none";
 
-    //"beforeend" adds the element end of it
-
     for (let i = 0; i < data.length; i++) {
       // const element = data[i];
 
-      showAndCreateNoteAndTextArea(data[i].id, data[i].header, data[i].text);
+      showAndCreateNoteAndTextArea(
+        data[i].id,
+        data[i].header,
+        data[i].text,
+        data[i].isSelected
+      );
     }
 
     selectNoteAndShowTextArea();
@@ -177,7 +238,7 @@ const showMainPageIfHasData = () => {
 showMainPageIfHasData();
 
 createOneNoteBtn.addEventListener("click", () => {
-  let data = dataFromLocalStorage();
+  let data = getDataFromLocalStorage();
   let newData = generateBlankData();
 
   data.push(newData);
