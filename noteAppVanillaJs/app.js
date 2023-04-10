@@ -88,6 +88,7 @@ firstCreateBtn.addEventListener("click", () => {
   //just after clicking create button, this function will create first elements and show it to the screen
   showMainPageIfHasData();
   deleteNote();
+  saveChangesToTextArea();
 });
 
 const rearrangeNoteDiv = (id, header, text, isSelected) => {
@@ -152,39 +153,7 @@ const selectNoteAndShowTextArea = () => {
           t.style.display = "none";
         }
 
-        //if any textarea has any input then find it with dataset id then write it to localStorage
-        t.addEventListener("input", (e) => {
-          let data = getDataFromLocalStorage();
-          let idOfTheTextArea = e.target.dataset.id;
-          data.filter((d) =>
-            d.id === idOfTheTextArea ? (d.text = e.target.value) : ""
-          );
-
-          console.log("after click");
-          //if user make any change on a note, then put it on the beginning of the note
-          let newData = [];
-          for (let i = 0; i < data.length; i++) {
-            const note = data[i];
-            if (note.id === idOfTheTextArea) {
-              newData.unshift(note);
-            } else {
-              newData.push(note);
-            }
-          }
-
-          setLocalStorage("data", newData);
-
-          notesHeaderDiv.innerHTML = "";
-          // notesArticle.innerHTML = "";
-
-          for (let i = 0; i < newData.length; i++) {
-            const data = newData[i];
-
-            rearrangeNoteDiv(data.id, data.header, data.text, data.isSelected);
-          }
-          deleteNote();
-          selectNoteAndShowTextArea();
-        });
+        saveChangesToTextArea();
       });
 
       //remove selectedclass list
@@ -200,11 +169,48 @@ const selectNoteAndShowTextArea = () => {
 selectNoteAndShowTextArea();
 
 const saveChangesToTextArea = () => {
-  console.log(document.querySelectorAll("textarea"));
-  console.log("do u even lift bro");
+  let textareas = document.querySelectorAll("textarea");
+
+  textareas.forEach((t) => {
+    if (t.style.display === "block") {
+      t.addEventListener("input", (e) => {
+        let data = getDataFromLocalStorage();
+        let idOfTheTextArea = e.target.dataset.id;
+        data.filter((d) =>
+          d.id === idOfTheTextArea ? (d.text = e.target.value) : ""
+        );
+
+        //if user make any change on a note, then put it on the beginning of the note
+        let newData = [];
+        for (let i = 0; i < data.length; i++) {
+          const note = data[i];
+          if (note.id === idOfTheTextArea) {
+            newData.unshift(note);
+          } else {
+            newData.push(note);
+          }
+        }
+
+        setLocalStorage("data", newData);
+
+        notesHeaderDiv.innerHTML = "";
+        // notesArticle.innerHTML = "";
+
+        for (let i = 0; i < newData.length; i++) {
+          const data = newData[i];
+
+          rearrangeNoteDiv(data.id, data.header, data.text, data.isSelected);
+        }
+        deleteNote();
+        selectNoteAndShowTextArea();
+      });
+    }
+  });
 };
 
-saveChangesToTextArea();
+window.addEventListener("load", saveChangesToTextArea);
+
+// saveChangesToTextArea();
 //if local storage has data then show the Main page which has notes, also add the nodes
 //else show noData screen
 const showMainPageIfHasData = () => {
