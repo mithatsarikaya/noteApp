@@ -81,7 +81,8 @@ export default function App() {
   }
   
   //when user click trash button which is close to note, delete it 
-  const getIdToBeDeletedFromChildAndDelete=(getIt)=>{
+  const getIdToBeDeletedFromChildAndDelete=(e,getIt)=>{
+    e.stopPropagation()
     let idToBeDeleted = getIt
     setNotes(prevNotes=>prevNotes.filter(n=>n.id!==idToBeDeleted))
   }
