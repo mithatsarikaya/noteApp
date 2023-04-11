@@ -37,13 +37,24 @@ export default function App() {
   )
   //get data on first render
   
+  //if notes change write it to localStorage
+  React.useEffect(()=>{
+    localStorage.setItem("data", JSON.stringify(notes))
+    if(notes.length ===0){
+      localStorage.clear()
+    }
+  }, [notes])
 
-
-  const [selectedNoteId, setSelectedNoteId] = React.useState("")
+  
+  const [selectedNoteId, setSelectedNoteId] = React.useState(notes[0] && notes[0].id || "")
   const selectNote = (e)=>{
     setSelectedNoteId(selectedNoteId=>e.target.dataset.id)
   }
-  const createFirstNote = ()=>setNotes([generateBlankData()])
+  const createFirstNote = ()=>{
+    let firstData = generateBlankData()
+    setNotes([...notes, firstData])
+    setSelectedNoteId(firstData.id)
+  }
   const deleteForFun = ()=>setNotes([])
   const addNoteAndTextArea =()=>{
     setNotes(prevNote => [...prevNote, generateBlankData()])
@@ -53,7 +64,18 @@ export default function App() {
   const editTheNoteText = (e)=>{
     let noteIdToBeEditText = e.target.dataset.id
     setNotes(prevNote=> {
-     return prevNote.map(p=> p.id === noteIdToBeEditText ? {...p, text : e.target.value} : p)
+      let newArray = []
+      for (let i = 0; i < prevNote.length; i++) {
+        let note = prevNote[i];
+        if(note.id===noteIdToBeEditText){
+          note = {...note, text:e.target.value }
+          newArray.unshift(note)
+        }else{
+          newArray.push(note)
+        }
+      }
+      return newArray
+    //  return prevNote.map(p=> p.id === noteIdToBeEditText ? {...p, text : e.target.value} : p)
     })
 
   }
@@ -68,13 +90,6 @@ export default function App() {
   
 
 
-  //if notes change write it to localStorage
-  React.useEffect(()=>{
-    localStorage.setItem("data", JSON.stringify(notes))
-    if(notes.length ===0){
-      localStorage.clear()
-    }
-  }, [notes])
 
   return (
     
